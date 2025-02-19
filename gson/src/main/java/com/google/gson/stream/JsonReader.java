@@ -1514,9 +1514,12 @@ public class JsonReader implements Closeable {
     char[] buffer = this.buffer;
     int p = pos;
     int l = limit;
+    // +1
     while (true) {
+      // +1
       if (p == l) {
         pos = p;
+        // +1
         if (!fillBuffer(1)) {
           break;
         }
@@ -1525,20 +1528,27 @@ public class JsonReader implements Closeable {
       }
 
       int c = buffer[p++];
+      // +1
       if (c == '\n') {
         lineNumber++;
         lineStart = p;
         continue;
+      // +1
+      // +1
+      // +1
       } else if (c == ' ' || c == '\r' || c == '\t') {
         continue;
       }
 
+      // +1
       if (c == '/') {
         pos = p;
+        // +1
         if (p == l) {
           pos--; // push back '/' so it's still in the buffer when this method returns
           boolean charsLoaded = fillBuffer(2);
           pos++; // consume the '/' again
+          // +1
           if (!charsLoaded) {
             return c;
           }
@@ -1547,9 +1557,11 @@ public class JsonReader implements Closeable {
         checkLenient();
         char peek = buffer[pos];
         switch (peek) {
+          // +1
           case '*':
             // skip a /* c-style comment */
             pos++;
+            // +1
             if (!skipTo("*/")) {
               throw syntaxError("Unterminated comment");
             }
@@ -1557,6 +1569,7 @@ public class JsonReader implements Closeable {
             l = limit;
             continue;
 
+          // +1
           case '/':
             // skip a // end-of-line comment
             pos++;
@@ -1565,9 +1578,11 @@ public class JsonReader implements Closeable {
             l = limit;
             continue;
 
+          // +1
           default:
             return c;
         }
+      // +1
       } else if (c == '#') {
         pos = p;
         /*
@@ -1584,6 +1599,7 @@ public class JsonReader implements Closeable {
         return c;
       }
     }
+    // +1
     if (throwOnEof) {
       throw new EOFException("End of input" + locationString());
     } else {

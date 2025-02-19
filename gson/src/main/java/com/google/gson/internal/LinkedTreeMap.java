@@ -336,20 +336,29 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
    * @param insert true if the node was unbalanced by an insert; false if it was by a removal.
    */
   private void rebalance(Node<K, V> unbalanced, boolean insert) {
+    // +1
     for (Node<K, V> node = unbalanced; node != null; node = node.parent) {
       Node<K, V> left = node.left;
       Node<K, V> right = node.right;
+      // +1
       int leftHeight = left != null ? left.height : 0;
+      // +1
       int rightHeight = right != null ? right.height : 0;
 
       int delta = leftHeight - rightHeight;
+      // +1
       if (delta == -2) {
         Node<K, V> rightLeft = right.left;
         Node<K, V> rightRight = right.right;
+        // +1
         int rightRightHeight = rightRight != null ? rightRight.height : 0;
+        // +1
         int rightLeftHeight = rightLeft != null ? rightLeft.height : 0;
 
         int rightDelta = rightLeftHeight - rightRightHeight;
+        // +1
+        // +1
+        // +1
         if (rightDelta == -1 || (rightDelta == 0 && !insert)) {
           rotateLeft(node); // AVL right right
         } else {
@@ -357,17 +366,23 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
           rotateRight(right); // AVL right left
           rotateLeft(node);
         }
+        // +1
         if (insert) {
           break; // no further rotations will be necessary
         }
-
+      // +1
       } else if (delta == 2) {
         Node<K, V> leftLeft = left.left;
         Node<K, V> leftRight = left.right;
+        // +1
         int leftRightHeight = leftRight != null ? leftRight.height : 0;
+        // +1
         int leftLeftHeight = leftLeft != null ? leftLeft.height : 0;
 
         int leftDelta = leftLeftHeight - leftRightHeight;
+        // +1
+        // +1
+        // +1
         if (leftDelta == 1 || (leftDelta == 0 && !insert)) {
           rotateRight(node); // AVL left left
         } else {
@@ -375,19 +390,23 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
           rotateLeft(left); // AVL left right
           rotateRight(node);
         }
+        // +1
         if (insert) {
           break; // no further rotations will be necessary
         }
-
+      // +1
       } else if (delta == 0) {
         node.height = leftHeight + 1; // leftHeight == rightHeight
+        // +1
         if (insert) {
           break; // the insert caused balance, so rebalancing is done!
         }
 
       } else {
+        // +1
         assert (delta == -1 || delta == 1);
         node.height = Math.max(leftHeight, rightHeight) + 1;
+        // +1
         if (!insert) {
           break; // the height hasn't changed, so rebalancing is done!
         }
